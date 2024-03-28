@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "addressBook.Server", "addressBook.Server\addressBook.Server.csproj", "{24988578-500A-4725-B2CE-2931BE11D8A9}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "addressbook.client", "addressbook.client\addressbook.client.esproj", "{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24988578-500A-4725-B2CE-2931BE11D8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24988578-500A-4725-B2CE-2931BE11D8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24988578-500A-4725-B2CE-2931BE11D8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24988578-500A-4725-B2CE-2931BE11D8A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995D2E9E-1D08-4329-BBDB-41DED9ED15A3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ABBF22BA-4061-4E5C-90B9-4880C30CB996}
+	EndGlobalSection
+EndGlobal

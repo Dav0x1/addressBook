@@ -1,0 +1,29 @@
+<div class="card" (click)="toggleDetails()" *ngIf="!isDeleted">
+  <div class="card-header">
+    <h6 class="card-title mb-1">{{ contact.name }} {{ contact.surname }}</h6>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item py-1"><strong>Email:</strong> {{ contact.email }}</li>
+      <li *ngIf="showDetails && contact.phoneNumber" class="list-group-item py-1"><strong>Numer telefonu:</strong> {{ contact.phoneNumber }}</li>
+      <li *ngIf="showDetails && contact.dateOfBirth" class="list-group-item py-1"><strong>Data urodzenia:</strong> {{ contact.dateOfBirth | date: 'dd.MM.yyyy' }}</li>
+      <li *ngIf="showDetails && contact.category" class="list-group-item py-1"><strong>Kategoria:</strong> {{ contact.category.name }}</li>
+      <li *ngIf="showDetails && contact.subcategory" class="list-group-item py-1"><strong>Podkategoria:</strong> {{ contact.subcategory.name }}</li>
+    </ul>
+
+    <button *ngIf="showDetails" class="btn btn-danger" (click)="deleteContact()">Delete</button>
+    <button *ngIf="showDetails" class="btn btn-success" (click)="open(demoModal)">Edit</button>
+  </div>
+</div>
+
+<ng-template #demoModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Update Contact</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <app-new-contact-form [input]="contact" (output)="updateContact($event)"></app-new-contact-form>
+  </div>
+</ng-template>
+
+

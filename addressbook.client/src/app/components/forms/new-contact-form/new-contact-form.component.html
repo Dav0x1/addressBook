@@ -1,0 +1,64 @@
+<form *ngIf="!isLoading" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" name="name" class="form-control" [(ngModel)]="contact.name" placeholder="Enter name">
+  </div>
+  <div class="form-group">
+    <label for="surname">Surname</label>
+    <input id="surname" name="surname" class="form-control" [(ngModel)]="contact.surname" placeholder="Enter surname">
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="contact.email" placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" class="form-control" [(ngModel)]="contact.password" placeholder="Enter password">
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number</label>
+    <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="contact.phoneNumber" placeholder="Enter phone number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}">
+  </div>
+  <div class="form-group">
+    <label for="dateOfBirth">Date of Birth</label>
+    <div class="input-group">
+      <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" [(ngModel)]="contact.dateOfBirth">
+    </div>
+  </div>
+  <!-- Category -->
+  <div class="form-group">
+    <label for="category">Category</label>
+    <select id="category" name="category" class="form-control" (change)="onCategoryChange(contact.category)" [(ngModel)]="contact.category">
+      <option *ngFor="let category of categories" [ngValue]="category">{{ category.name }}</option>
+    </select>
+  </div>
+
+  <!-- Subcategory to choose -->
+  <div class="form-group" *ngIf="displaySubcategoryElement === 2">
+    <label for="subcategory">Subcategory</label>
+    <select id="subcategory" name="subcategory" class="form-control"  [(ngModel)]="contact.subcategory">
+      <option *ngFor="let subcategory of subcategories" [ngValue]="subcategory">{{ subcategory.name }}</option>
+    </select>
+  </div>
+  <!-- Subcategory to type -->
+  <div class="form-group" *ngIf="displaySubcategoryElement === 1">
+    <label for="subcategory">Subcategory</label>
+    <div class="input-group">
+      <input id="subcategory" name="subcategory" class="form-control" placeholder="Enter subcategory" [(ngModel)]="contact.subcategory.name">
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary">Confirm</button>
+  </div>
+</form>
+
+<!-- Display error info instead of form -->
+<div *ngIf="isLoading && !isError" class="alert alert-info" role="alert">
+  Loading...
+</div>
+
+<!-- Display error info instead of form -->
+<div *ngIf="isError" class="alert alert-danger" role="alert">
+  Error while loading form
+</div>

@@ -1,0 +1,46 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <h1>Address Book</h1>
+    </a>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#" (click)="showContacts()">Contacts List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#" (click)="showLoginForm()">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#" (click)="showRegisterForm()">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#" (click)="open(demoModal)">Create Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Container for content -->
+<div class="container py-3">
+  <ng-container *ngIf="showContactsList">
+    <app-contact-list></app-contact-list>
+  </ng-container>
+  <ng-container *ngIf="showLogin">
+    <app-login-form></app-login-form>
+  </ng-container>
+  <ng-container *ngIf="showRegister">
+    <app-register-form></app-register-form>
+  </ng-container>
+</div>
+
+<!-- Modal element for create contact -->
+<ng-template #demoModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Contact</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <app-new-contact-form (output)="addContact($event)"></app-new-contact-form>
+  </div>
+</ng-template>

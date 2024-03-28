@@ -1,0 +1,7 @@
+<div *ngFor="let contact of contacts">
+  <app-contact [contact]="contact"></app-contact>
+</div>
+
+<button class="btn btn-secondary" (click)="previousPage()" [disabled]="paginationPage === 1">Previous page</button>
+{{paginationPage}}/{{totalPaginationPage}}
+<button class="btn btn-secondary" (click)="nextPage()">Next page</button>

@@ -1,0 +1,21 @@
+<h2>Login</h2>
+<form (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <label for="login">Login</label>
+    <input id="login" name="login" class="form-control" [(ngModel)]="identity.login" placeholder="Enter login">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" class="form-control" [(ngModel)]="identity.password" placeholder="Enter password">
+  </div>
+
+  <div class="info-box" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary">Confirm</button>
+  </div>
+</form>
