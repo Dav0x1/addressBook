@@ -65,7 +65,7 @@ export class ApiService {
     return this.http.post<{ token: string }>(`/login`, identity);
   }
 
-  register(identity: Identity): Observable<void> {
-    return this.http.post<void>(`/register`, identity);
+  register(identity: Identity): Observable<string> {
+    return this.http.post<string>(`/register`, identity);
   }
 }

@@ -9,17 +9,17 @@ import { ApiService } from '../../../services/api.service';
 })
 export class RegisterFormComponent {
   public identity: Identity = new Identity();
-  public errorMessage: string = '';
+  public infoMessage: string = '';
 
   constructor(private apiService: ApiService) { }
 
   onSubmit() {
     this.apiService.register(this.identity).subscribe(
       response => {
-        this.errorMessage = 'Account created';
+        this.infoMessage = response;
       },
       error => {
-        this.errorMessage = 'Registration failed';
+        this.infoMessage = error.error;
       }
     );
   }
