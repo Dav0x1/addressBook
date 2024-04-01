@@ -165,7 +165,7 @@ namespace addressBook.Server.Controllers
                 await _dbContext.Contacts.AddAsync(contact);
                 await _dbContext.SaveChangesAsync();
 
-                return Ok(new { message = "Contact has been added" });
+                return Ok(JsonConvert.SerializeObject("Contact has been updated"));
             }
             catch (Exception ex)
             {
