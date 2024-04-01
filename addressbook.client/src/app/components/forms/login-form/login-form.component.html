@@ -11,8 +11,8 @@
     <input type="password" id="password" name="password" class="form-control" [(ngModel)]="identity.password" placeholder="Enter password">
   </div>
 
-  <div class="info-box" *ngIf="errorMessage">
-    {{ errorMessage }}
+  <div class="info-box" *ngIf="infoMessage">
+    {{ infoMessage }}
   </div>
 
   <div class="text-center">

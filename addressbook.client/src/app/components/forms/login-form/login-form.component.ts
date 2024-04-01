@@ -9,7 +9,7 @@ import { Identity } from '../../../models/identity.model';
 })
 export class LoginFormComponent {
   public identity: Identity = new Identity();
-  public errorMessage: string = '';
+  public infoMessage: string = '';
 
   constructor(private apiService: ApiService) { }
 
@@ -18,11 +18,10 @@ export class LoginFormComponent {
       response => {
         const token = response.token;
         localStorage.setItem('jwtToken', token);
-        console.log('Login successful. Token:', token);
+        this.infoMessage = 'Login successful';
       },
       error => {
-        console.error('Login error:', error);
-        this.errorMessage = 'Login failed';
+        this.infoMessage = 'Login failed';
       }
     );
   }
