@@ -16,6 +16,7 @@
   </div>
 </div>
 
+<!-- Modal element for update contact -->
 <ng-template #demoModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Update Contact</h4>
@@ -23,6 +24,9 @@
   </div>
   <div class="modal-body">
     <app-new-contact-form [input]="contact" (output)="updateContact($event)"></app-new-contact-form>
+    <div class="info-box" *ngIf="updateContactInfoMessage">
+      {{ updateContactInfoMessage }}
+    </div>
   </div>
 </ng-template>
 

@@ -13,6 +13,7 @@ export class ContactComponent {
   showDetails: boolean = false;
   isDeleted: boolean = false;
   isEditing: boolean = false;
+  updateContactInfoMessage: string = '';
 
   constructor(private modalService: NgbModal, private apiService: ApiService) {
     this.contact = new Contact();
@@ -39,10 +40,18 @@ export class ContactComponent {
   async updateContact(contact: Contact) {
     this.apiService.updateContact(contact).subscribe(
       (response) => {
-        console.log('Contact updated:', response);
+        this.updateContactInfoMessage = response;
       },
       (error) => {
-        console.error('Error while adding user:', error);
+        if (error.status === 400 && error.error) {
+          if (typeof error.error === 'object') {
+            this.updateContactInfoMessage = "Fill form correctly";
+          } else {
+            this.updateContactInfoMessage = error.error;
+          }
+        } else {
+          this.updateContactInfoMessage = "Unknow error";
+        }
       }
     );
   }
