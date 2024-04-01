@@ -20,7 +20,7 @@ namespace addressBook.Server.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Data validation error");
             }
 
             var newUser = new Identity();

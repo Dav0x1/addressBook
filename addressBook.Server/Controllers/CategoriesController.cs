@@ -15,7 +15,7 @@ namespace addressBook.Server.Controllers
             _dbContext = dbContext;
         }
 
-        // Return: Category List
+        // Return category list
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -26,7 +26,8 @@ namespace addressBook.Server.Controllers
             }
             catch(Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}"); // Error: Could read categories from database
+                Console.Write(ex.ToString());
+                return StatusCode(500, "Error while reading categories");
             }
         }
     }

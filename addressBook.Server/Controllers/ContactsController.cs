@@ -1,12 +1,8 @@
 ﻿using addressBook.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
-using System.Text;
-using System.Security.Cryptography;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace addressBook.Server.Controllers
 {
@@ -25,8 +21,7 @@ namespace addressBook.Server.Controllers
          * Parameters:
          * paginationPage - Id representing pagination page
          * paginationAmount - Amount of record that is return
-         * Return: Contact List 
-        */
+         * Return: Contact List */
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] int paginationPage = 1, [FromQuery] int paginationAmount = 10)
         {
@@ -47,7 +42,8 @@ namespace addressBook.Server.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                Console.Write(ex.ToString());
+                return StatusCode(500, "Error while reading contacts");
             }
             
         }
@@ -55,8 +51,7 @@ namespace addressBook.Server.Controllers
         /* Endpoint that return count of pagination pages
          * Parameters:
          * paginationAmount - Amount of record that is return
-         * Return: Total pagination pages
-        */
+         * Return: Total pagination pages */
         [HttpGet("paginationPages")]
         public IActionResult GetPaginationPages([FromQuery] int paginationAmount = 10)
         {
@@ -67,8 +62,7 @@ namespace addressBook.Server.Controllers
 
         /* Endpoint for delete contact with given id
          * Parameters:
-         * id - contact id to delete
-        */
+         * id - contact id to delete */
         [Authorize]
         [HttpDelete("delete")]
         public IActionResult DeleteContact([FromQuery] int id)
@@ -76,7 +70,7 @@ namespace addressBook.Server.Controllers
             var contactToDelete = _dbContext.Contacts.FirstOrDefault(c => c.Id == id);
             if (contactToDelete == null)
             {
-                return NotFound("Coun't find contact with this id");
+                return NotFound("Couldn't find contact with this id");
             }
 
             _dbContext.Contacts.Remove(contactToDelete);
@@ -87,8 +81,7 @@ namespace addressBook.Server.Controllers
 
         /* Endpoint for adding a contact
          * Expects:
-         * JSON Contact data
-        */
+         * JSON Contact data */
         [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddContact([FromBody] Contact contact)
@@ -98,7 +91,7 @@ namespace addressBook.Server.Controllers
                 // Contact validation
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest("Data validation error");
                 }
 
                 // Validate password complexity
@@ -110,21 +103,24 @@ namespace addressBook.Server.Controllers
                 // Check if there isn't contact with such email
                 if (await _dbContext.Contacts.AnyAsync(c=>c.Email == contact.Email))
                 {
-                    return BadRequest("This email is already in use");
+                    return BadRequest("Email already in use");
                 }
 
-                // Check if category exists and its ID matches the provided name
-                if (contact.Category == null) 
-                    return BadRequest("Category is not initialize");
+                // Check if category exists
+                if (contact.Category == null)
+                {
+                    return BadRequest("Category isn't initialize");
+                }
 
+                // Check if ID matches the provided name of category
                 var category = await _dbContext.Categories.FirstOrDefaultAsync(cat => cat.Name == contact.Category.Name);
                 if (category == null)
                 {
-                    return BadRequest("Category does not exist");
+                    return BadRequest("Category doesn't exist");
                 }
                 if (category.Id != contact.Category.Id)
                 {
-                    return BadRequest("Category ID does not match to category name");
+                    return BadRequest("Category ID doesn't match to name");
                 }
                 contact.CategoryId = category.Id;
                 contact.Category = category;
@@ -144,23 +140,28 @@ namespace addressBook.Server.Controllers
                 {
                     var subcategory = await _dbContext.Subcategories.FirstOrDefaultAsync(cat => cat.Name == contact.Subcategory.Name);
                     if (subcategory == null)
-                        return BadRequest("Subcategory does not exist");
+                    {
+                        return BadRequest("Subcategory doesn't exist");
+                    }
                     contact.Subcategory = subcategory;
                     contact.SubcategoryId = subcategory.Id;
                 }
                 else if(category.Name == "inny")
                 {
                     if (await _dbContext.Subcategories.AnyAsync(cat => cat.Name == contact.Subcategory.Name))
+                    {
                         return BadRequest("Subcategory already exist");
-
+                    }
                     contact.Subcategory.Id = 0;
+
                     await _dbContext.Subcategories.AddAsync(contact.Subcategory);
                 }
 
-                // Check if Id is not set
+                // Check if Id isn't set
                 if (contact.Id != null)
+                {
                     contact.Id = 0;
-
+                }
                 await _dbContext.Contacts.AddAsync(contact);
                 await _dbContext.SaveChangesAsync();
 
@@ -168,14 +169,14 @@ namespace addressBook.Server.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                Console.Write(ex.ToString());
+                return StatusCode(500, "Error while adding contact");
             }
         }
 
         /* Endpoint for updating a contact
          * Expects:
-         * JSON Contact data
-        */
+         * JSON Contact data */
         [Authorize]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateContact([FromBody] Contact contact)
@@ -185,7 +186,7 @@ namespace addressBook.Server.Controllers
                 // Contact validation
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest("Data validation error");
                 }
 
                 // Validate password complexity
@@ -198,21 +199,24 @@ namespace addressBook.Server.Controllers
                 var existingContact = await _dbContext.Contacts.FirstOrDefaultAsync(c => c.Email == contact.Email);
                 if (existingContact == null)
                 {
-                    return BadRequest("There is not contact with this email to update");
+                    return BadRequest("There isn't contact with this email to update");
                 }
 
-                // Check if category exists and its ID matches the provided name
+                // Check if category exists
                 if (contact.Category == null)
-                    return BadRequest("Category is not initialize");
+                {
+                    return BadRequest("Category isn't initialize");
+                }
 
+                // Check if ID matches the provided name of category
                 var category = await _dbContext.Categories.FirstOrDefaultAsync(cat => cat.Name == contact.Category.Name);
                 if (category == null)
                 {
-                    return BadRequest("Category does not exist");
+                    return BadRequest("Category doesn't exist");
                 }
                 if (category.Id != contact.Category.Id)
                 {
-                    return BadRequest("Category ID does not match to category name");
+                    return BadRequest("Category ID doesn't match to name");
                 }
                 contact.CategoryId = category.Id;
                 contact.Category = category;
@@ -232,31 +236,32 @@ namespace addressBook.Server.Controllers
                 {
                     var subcategory = await _dbContext.Subcategories.FirstOrDefaultAsync(cat => cat.Name == contact.Subcategory.Name);
                     if (subcategory == null)
-                        return BadRequest("Subcategory does not exist");
+                    {
+                        return BadRequest("Subcategory doesn't exist");
+                    }
                     contact.Subcategory = subcategory;
                     contact.SubcategoryId = subcategory.Id;
                 }
                 else if (category.Name == "inny")
                 {
                     if (await _dbContext.Subcategories.AnyAsync(cat => cat.Name == contact.Subcategory.Name))
+                    {
                         return BadRequest("Subcategory already exist");
+                    }
 
                     contact.Subcategory.Id = 0;
                     await _dbContext.Subcategories.AddAsync(contact.Subcategory);
                 }
 
-                // Check if Id is not set
-                if (contact.Id != null)
-                    contact.Id = existingContact.Id;
-
                 _dbContext.Entry(existingContact).CurrentValues.SetValues(contact);
                 await _dbContext.SaveChangesAsync();
 
-                return Ok(new { message = "Contact has been updated" });
+                return Ok(JsonConvert.SerializeObject("Contact has been updated"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                Console.Write(ex.ToString());
+                return StatusCode(500, "Error while updating contact");
             }
         }
 
