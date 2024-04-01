@@ -47,8 +47,8 @@ export class ApiService {
     });
   }
 
-  updateContact(contact: Contact): Observable<void> {
-    return this.http.post<void>(`/contacts/update`, contact, {
+  updateContact(contact: Contact): Observable<string> {
+    return this.http.post<string>(`/contacts/update`, contact, {
       headers: this.getHeaders()
     });
   }
