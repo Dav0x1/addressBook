@@ -12,6 +12,7 @@ export class AppComponent {
   showContactsList: boolean = true;
   showLogin: boolean = false;
   showRegister: boolean = false;
+  addContactInfoMessage: string = '';
 
   constructor(private modalService: NgbModal, private apiService: ApiService) {
   }
@@ -23,10 +24,18 @@ export class AppComponent {
   async addContact(contact: Contact) {
     this.apiService.addContact(contact).subscribe(
         (response) => {
-          console.log('Contact added:', response);
+          this.addContactInfoMessage = response;
         },
-        (error) => {
-          console.error('Error while adding user:', error);
+      (error) => {
+        if (error.status === 400 && error.error) {
+          if (typeof error.error === 'object') {
+            this.addContactInfoMessage = "Fill form correctly";
+          } else {
+            this.addContactInfoMessage = error.error;
+          }
+        } else {
+          this.addContactInfoMessage = "Unknow error";
+        }
         }
       );
   }

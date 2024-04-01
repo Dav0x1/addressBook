@@ -42,5 +42,8 @@
   </div>
   <div class="modal-body">
     <app-new-contact-form (output)="addContact($event)"></app-new-contact-form>
+    <div class="info-box" *ngIf="addContactInfoMessage">
+      {{ addContactInfoMessage }}
+    </div>
   </div>
 </ng-template>
