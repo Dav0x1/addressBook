@@ -20,7 +20,7 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = "http://localhost:5011",
-        ValidAudience = "https://localhost:4200",
+        ValidAudience = builder.Configuration.GetSection("JwtSettings")["ValidAudience"],
         //Key shouldn't be store in appsettings.json
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtSettings")["Key"])),
         ValidateIssuer = true,
