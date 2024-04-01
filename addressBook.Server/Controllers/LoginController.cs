@@ -24,18 +24,20 @@ namespace addressBook.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] Identity identity)
         {
+            var audience = HttpContext.Request.Headers["Origin"].ToString();
+
             var user = await _db.Identities.FirstOrDefaultAsync(i => i.login == identity.login);
 
             if (user != null && user.password == identity.password)
             {
-                var token = GenerateJwtToken(identity.login);
+                var token = GenerateJwtToken(identity.login, audience);
                 return Ok(new { Token = token });
             }
 
             return Unauthorized();
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string username, string audience)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:Key"]);
@@ -48,7 +50,7 @@ namespace addressBook.Server.Controllers
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Audience = "https://localhost:4200", // Replace static value with dynamic
+                Audience = audience,
                 Issuer = "http://localhost:5011"
             };
 
