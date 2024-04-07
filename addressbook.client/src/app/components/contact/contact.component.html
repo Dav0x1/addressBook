@@ -11,8 +11,8 @@
       <li *ngIf="showDetails && contact.subcategory" class="list-group-item py-1"><strong>Podkategoria:</strong> {{ contact.subcategory.name }}</li>
     </ul>
 
-    <button *ngIf="showDetails" class="btn btn-danger" (click)="deleteContact()">Delete</button>
-    <button *ngIf="showDetails" class="btn btn-success" (click)="open(demoModal)">Edit</button>
+    <button *ngIf="showDetails && isLogged" class="btn btn-danger" (click)="deleteContact()">Delete</button>
+    <button *ngIf="showDetails && isLogged" class="btn btn-success" (click)="open(demoModal)">Edit</button>
   </div>
 </div>
 
@@ -29,5 +29,3 @@
     </div>
   </div>
 </ng-template>
-
-

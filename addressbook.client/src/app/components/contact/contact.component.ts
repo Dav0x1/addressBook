@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Contact } from '../../models/contact.model';
 import { ApiService } from '../../services/api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { JwtService } from '../../services/jwt.service';
 
 @Component({
   selector: 'app-contact',
@@ -9,14 +10,16 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './contact.component.css'
 })
 export class ContactComponent {
-  @Input() contact: Contact;
+  @Input() contact: Contact = new Contact();
   showDetails: boolean = false;
   isDeleted: boolean = false;
   isEditing: boolean = false;
+  isLogged: boolean = false;
   updateContactInfoMessage: string = '';
 
-  constructor(private modalService: NgbModal, private apiService: ApiService) {
-    this.contact = new Contact();
+  constructor(private modalService: NgbModal, private apiService: ApiService, private jwtService: JwtService) {
+    this.isLogged = !jwtService.isTokenExpired();
+
   }
 
   public open(modal: any): void {

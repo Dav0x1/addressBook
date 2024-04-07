@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Contact } from './models/contact.model';
 import { ApiService } from './services/api.service';
+import { JwtService } from './services/jwt.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,10 @@ export class AppComponent {
   showLogin: boolean = false;
   showRegister: boolean = false;
   addContactInfoMessage: string = '';
+  isLogged: boolean = false;
 
-  constructor(private modalService: NgbModal, private apiService: ApiService) {
+  constructor(private modalService: NgbModal, private apiService: ApiService, private jwtService : JwtService) {
+    this.isLogged = !jwtService.isTokenExpired();
   }
 
   public open(modal: any): void {
@@ -56,5 +59,10 @@ export class AppComponent {
     this.showContactsList = false;
     this.showLogin = false;
     this.showRegister = true;
+  }
+
+  logout() {
+    this.jwtService.removeToken();
+    location.reload();
   }
 }
