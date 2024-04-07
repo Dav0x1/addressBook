@@ -12,6 +12,7 @@ import { ContactListComponent } from './components/contact-list/contact-list.com
 import { ContactComponent } from './components/contact/contact.component';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { RegisterFormComponent } from './components/forms/register-form/register-form.component';
+import { JwtService } from './services/jwt.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RegisterFormComponent } from './components/forms/register-form/register
     FormsModule
   ],
   providers: [
-    ApiService
+    ApiService,
+    JwtService
   ],
   bootstrap: [AppComponent]
 })
